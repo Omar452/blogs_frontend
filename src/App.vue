@@ -1,10 +1,36 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <Navbar />
+  <router-view />
+  <div class='text-left' v-if="!isHome">
+    <ReturnButton />
   </div>
-  <router-view/>
+  
 </template>
+
+<script>
+import Navbar from './components/Navbar.vue'
+import ReturnButton from './components/ReturnButton'
+import { useRoute } from 'vue-router'
+import { ref, watch } from 'vue'
+
+export default {
+ components: {Navbar, ReturnButton},
+ setup(){
+    const route = useRoute()
+    const isHome = ref('')
+
+    watch( () => route.name, () => {
+      if(route.name == 'Home'){
+        isHome.value = true
+      } else{
+        isHome.value = false
+      }
+    })
+    
+    return { isHome }
+ }
+}
+</script>
 
 <style>
 #app {
